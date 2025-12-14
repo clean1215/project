@@ -1,0 +1,10 @@
+cat > wrangler.jsonc << 'EOF'
+{
+  "name": "project",
+  "compatibility_date": "2025-12-14",
+  "assets": {
+    "directory": "./build",
+    "serve_single_page_app": true
+  }
+}
+EOF

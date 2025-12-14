@@ -1,3 +1,4 @@
+cat > package.json << 'EOF'
 {
   "name": "project",
   "version": "0.1.0",
@@ -16,17 +17,10 @@
     "deploy": "npm run build && npx wrangler deploy ./build"
   },
   "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "extends": ["react-app", "react-app/jest"]
   },
   "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
+    "production": [">0.2%", "not dead", "not op_mini all"],
     "development": [
       "last 1 chrome version",
       "last 1 firefox version",
@@ -34,3 +28,4 @@
     ]
   }
 }
+EOF

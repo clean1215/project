@@ -1,93 +1,55 @@
+// src/App.js
 import React, { useEffect, useState } from 'react';
-import '../css/style.css'; // 导入项目全局样式
+import './css/style.css'; // 正确：src/内的相对路径
+
+// 导入原有JS模块（改为ES6模块导入，替代动态脚本加载）
+import './js/utils.js';
+import './js/theme.js';
+import './js/navigation.js';
+import './js/console.js';
+import './js/file-manager.js';
+import './js/drag-drop.js';
+import './js/announcement.js';
+import './js/main.js';
 
 function App() {
   const [isLoaded, setIsLoaded] = useState(false);
 
+  // 组件挂载后初始化应用
   useEffect(() => {
-    const checkDependencies = () => {
-      const requiredModules = [
-        'FileManagerApp',
-        'NavigationManager',
-        'ThemeManager',
-        'ConsoleSystem',
-        'Utils'
-      ];
-
-      return requiredModules.every(module => window[module]);
-    };
-    const loadScripts = async () => {
-      // 按依赖顺序加载核心脚本
-      const scriptOrder = [
-        '/js/utils.js',
-        '/js/theme.js',
-        '/js/navigation.js',
-        '/js/console.js',
-        '/js/file-manager.js',
-        '/js/drag-drop.js',
-        '/js/announcement.js',
-        '/js/main.js'
-      ];
-
-      for (const src of scriptOrder) {
-        await new Promise((resolve, reject) => {
-          const script = document.createElement('script');
-          script.src = src;
-          script.onload = resolve;
-          script.onerror = () => reject(new Error(`Failed to load ${src}`));
-          document.body.appendChild(script);
-        });
-      }
-
-      // 验证依赖并初始化应用
-      if (checkDependencies()) {
-        // 初始化主题管理器
-        if (!window.themeManager) {
-          window.themeManager = new window.ThemeManager();
-        }
-
-        // 初始化导航管理器
-        if (!window.navigationManager) {
-          window.navigationManager = new window.NavigationManager();
-        }
-
-        // 初始化控制台系统
-        if (!window.consoleSystem) {
-          window.consoleSystem = new window.ConsoleSystem();
-        }
-
-        // 初始化文件管理器
-        if (!window.fileManager) {
-          window.fileManager = new window.FileManager();
-        }
-
-        // 启动主应用
-        if (!window.app) {
-          window.app = new window.FileManagerApp();
-        }
-
+    // 等待所有模块加载完成
+    const initApp = () => {
+      try {
+        // 初始化全局管理器（适配原有逻辑）
+        window.themeManager = new window.ThemeManager();
+        window.navigationManager = new window.NavigationManager();
+        window.consoleSystem = new window.ConsoleSystem();
+        window.fileManager = new window.FileManager();
+        window.app = new window.FileManagerApp();
+        
         setIsLoaded(true);
-      } else {
-        console.error('缺少必要的应用模块，无法初始化');
+      } catch (error) {
+        console.error('应用初始化失败:', error);
+        setIsLoaded(true); // 即使失败也显示页面
       }
     };
 
-    loadScripts().catch(error => {
-      console.error('初始化失败:', error);
-    });
+    // 延迟初始化，确保DOM加载完成
+    setTimeout(initApp, 500);
 
     // 清理函数
     return () => {
-      // 移除动态添加的脚本（可选）
-      document.querySelectorAll('script[src^="/js/"]').forEach(script => {
-        script.remove();
-      });
+      window.themeManager = null;
+      window.navigationManager = null;
+      window.consoleSystem = null;
+      window.fileManager = null;
+      window.app = null;
     };
   }, []);
 
   return (
     <div className="App">
-      {/* 应用加载状态 */}
+      {/* 加载状态 */}
       {!isLoaded ? (
         <div className="empty-state">
           <i className="ti ti-loader-circle"></i>
@@ -95,82 +57,37 @@ function App() {
           <p>请稍候，正在初始化文件管理系统...</p>
         </div>
       ) : (
-        // 应用主内容区域（对应原有HTML结构）
+        // 应用主结构（与原有HTML一致）
         <div className="main-container">
-          {/* 导航栏 */}
           <nav className="sidebar">
             <div className="logo">
               <i className="ti ti-file-code"></i>
               <span>文件管理器</span>
             </div>
             <ul className="nav-links">
-              <li>
-                <a href="#" className="nav-link active" data-page="dashboard">
-                  <i className="ti ti-home"></i>
-                  <span>仪表盘</span>
-                </a>
-              </li>
-              <li>
-                <a href="#" className="nav-link" data-page="items">
-                  <i className="ti ti-box"></i>
-                  <span>道具</span>
-                </a>
-              </li>
-              <li>
-                <a href="#" className="nav-link" data-page="skills">
-                  <i className="ti ti-bolt"></i>
-                  <span>技能</span>
-                </a>
-              </li>
-              <li>
-                <a href="#" className="nav-link" data-page="characters">
-                  <i className="ti ti-user"></i>
-                  <span>人物</span>
-                </a>
-              </li>
-              <li>
-                <a href="#" className="nav-link" data-page="talents">
-                  <i className="ti ti-star"></i>
-                  <span>天赋</span>
-                </a>
-              </li>
-              <li>
-                <a href="#" className="nav-link" data-page="others">
-                  <i className="ti ti-ellipsis-h"></i>
-                  <span>其他</span>
-                </a>
-              </li>
-              <li>
-                <a href="#" className="nav-link" data-page="images">
-                  <i className="ti ti-image"></i>
-                  <span>万相集</span>
-                </a>
-              </li>
-              <li>
-                <a href="#" className="nav-link" data-page="more">
-                  <i className="ti ti-settings"></i>
-                  <span>更多</span>
-                </a>
-              </li>
+              <li><a href="#" className="nav-link active" data-page="dashboard"><i className="ti ti-home"></i><span>仪表盘</span></a></li>
+              <li><a href="#" className="nav-link" data-page="items"><i className="ti ti-box"></i><span>道具</span></a></li>
+              <li><a href="#" className="nav-link" data-page="skills"><i className="ti ti-bolt"></i><span>技能</span></a></li>
+              <li><a href="#" className="nav-link" data-page="characters"><i className="ti ti-user"></i><span>人物</span></a></li>
+              <li><a href="#" className="nav-link" data-page="talents"><i className="ti ti-star"></i><span>天赋</span></a></li>
+              <li><a href="#" className="nav-link" data-page="others"><i className="ti ti-ellipsis-h"></i><span>其他</span></a></li>
+              <li><a href="#" className="nav-link" data-page="images"><i className="ti ti-image"></i><span>万相集</span></a></li>
+              <li><a href="#" className="nav-link" data-page="more"><i className="ti ti-settings"></i><span>更多</span></a></li>
             </ul>
           </nav>
 
-          {/* 主内容区 */}
           <main className="main-content">
-            {/* 页面标题 */}
             <header className="page-header">
               <h1 id="pageTitle">仪表盘</h1>
               <p id="pageDescription">管理您的资源文件，导入并查看内容</p>
             </header>
 
-            {/* 公告区域 */}
             <section id="announcementSection" className="announcement-section">
               <div className="announcement-card">
                 <h2 id="sectionTitle">资源文件</h2>
               </div>
             </section>
 
-            {/* 导入区域 */}
             <section id="importSection" className="import-section">
               <div className="import-card">
                 <div className="drag-drop-area" id="dragDropArea">
@@ -184,7 +101,6 @@ function App() {
               </div>
             </section>
 
-            {/* 网格内容区 */}
             <section id="gridSection" className="grid-section">
               <div className="category-selector">
                 <div className="category-options">
@@ -195,12 +111,9 @@ function App() {
                   <button className="category-option" data-category="others">其他</button>
                 </div>
               </div>
-              <div className="files-grid" id="filesGrid">
-                {/* 文件内容将由fileManager动态生成 */}
-              </div>
+              <div className="files-grid" id="filesGrid"></div>
             </section>
 
-            {/* 设置区域 */}
             <section id="moreSection" className="more-section" style={{ display: 'none' }}>
               <div className="settings-vertical">
                 <div className="settings-card">
@@ -218,12 +131,7 @@ function App() {
                       // 输入 "help" 查看可用命令
                     </div>
                     <div className="console-input-group">
-                      <input
-                        type="text"
-                        id="consoleInput"
-                        placeholder="输入命令..."
-                        className="console-input"
-                      />
+                      <input type="text" id="consoleInput" placeholder="输入命令..." className="console-input" />
                       <button id="executeCommand" className="btn primary">执行</button>
                       <button id="resetConsole" className="btn secondary">清空</button>
                     </div>
@@ -235,7 +143,7 @@ function App() {
         </div>
       )}
 
-      {/* 文件内容弹窗 */}
+      {/* 文件弹窗 */}
       <div id="fileModal" className="modal">
         <div className="modal-content">
           <div className="modal-header">

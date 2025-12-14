@@ -1,5 +1,3 @@
-cp package.json package.json.backup
-cat > package.json << 'EOF'
 {
   "name": "project",
   "version": "0.1.0",
@@ -29,4 +27,3 @@ cat > package.json << 'EOF'
     ]
   }
 }
-EOF

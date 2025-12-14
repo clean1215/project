@@ -1,7 +1,4 @@
-# 备份（可选）
 cp package.json package.json.backup
-
-# 创建正确的 package.json
 cat > package.json << 'EOF'
 {
   "name": "project",

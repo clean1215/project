@@ -1,0 +1,447 @@
+/* 文件管理弹窗样式 */
+.file-management-modal {
+    max-width: 900px;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    min-height: 500px; /* 确保最小高度 */
+}
+
+.file-management-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.file-management-tab {
+    padding: 10px 16px;
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    color: var(--text-light);
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 500;
+    flex: 1;
+    min-width: 80px;
+    text-align: center;
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+.file-management-tab:hover {
+    color: var(--primary-color);
+    background-color: var(--bg-hover);
+}
+
+.file-management-tab.active {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+    background-color: var(--bg-active);
+}
+
+.file-management-batch-actions,
+.file-management-single-actions {
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    background-color: var(--bg-active);
+    border-radius: 8px;
+    margin-bottom: 20px;
+    gap: 16px;
+    flex-wrap: wrap;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+}
+
+.file-management-batch-actions.show,
+.file-management-single-actions.show {
+    display: flex;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.file-management-batch-actions span,
+.file-management-single-actions span {
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.file-management-content {
+    flex: 1;
+    overflow-y: auto;
+    min-height: 300px;
+    padding-top: 8px; /* 为第一个文件添加顶部间距 */
+}
+
+.file-management-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.file-management-item {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    background-color: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    transition: var(--transition);
+    gap: 12px;
+    cursor: pointer;
+    animation: slideInUp 0.3s ease;
+    animation-fill-mode: both;
+}
+
+.file-management-item:hover {
+    border-color: var(--primary-color);
+    background-color: var(--bg-hover);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow);
+}
+
+.file-management-item.selected {
+    background-color: rgba(67, 97, 238, 0.1);
+    border-color: var(--primary-color);
+    box-shadow: 0 2px 8px rgba(67, 97, 238, 0.2);
+}
+
+.file-management-item.selected:hover {
+    background-color: rgba(67, 97, 238, 0.15);
+}
+
+.file-management-checkbox {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: var(--primary-color);
+}
+
+.file-management-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.file-management-name {
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: 6px;
+    word-break: break-word;
+    line-height: 1.4;
+}
+
+.file-management-meta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    font-size: 12px;
+    color: var(--text-light);
+}
+
+.file-management-category {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.file-management-empty {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-light);
+}
+
+.file-management-empty i {
+    font-size: 48px;
+    margin-bottom: 16px;
+    opacity: 0.5;
+}
+
+.file-management-empty h3 {
+    margin-bottom: 8px;
+    color: var(--text-color);
+}
+
+.file-management-actions {
+    display: flex;
+    gap: 12px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+    margin-top: 20px;
+    flex-wrap: wrap;
+    flex-shrink: 0; /* 防止按钮区域被压缩 */
+}
+
+.file-management-actions .btn {
+    flex: 1;
+    min-width: 120px;
+}
+
+/* 重命名输入框样式 */
+.rename-input-container {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-top: 8px;
+    flex-wrap: wrap;
+}
+
+.rename-input {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background-color: var(--card-color);
+    color: var(--text-color);
+    font-size: 14px;
+    min-width: 200px;
+}
+
+.file-extension {
+    color: var(--text-light);
+    font-size: 14px;
+    font-weight: 500;
+    padding: 8px 4px;
+    background-color: var(--bg-hover);
+    border-radius: 4px;
+}
+
+.rename-actions {
+    display: flex;
+    gap: 4px;
+}
+
+.rename-btn {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: var(--transition);
+}
+
+.rename-confirm {
+    background-color: var(--success-color);
+    color: white;
+}
+
+.rename-cancel {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .file-management-modal {
+        margin: 10px;
+        width: calc(100% - 20px);
+        max-height: calc(100vh - 20px);
+    }
+    
+    .file-management-tabs {
+        flex-direction: row;
+        overflow-x: auto;
+        padding-bottom: 8px;
+    }
+    
+    .file-management-tab {
+        flex: none;
+        min-width: 70px;
+        font-size: 12px;
+        padding: 8px 12px;
+    }
+    
+    .file-management-batch-actions,
+    .file-management-single-actions {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+    
+    .file-management-meta {
+        gap: 12px;
+    }
+    
+    .file-management-item {
+        padding: 12px;
+    }
+    
+    .file-management-actions {
+        flex-direction: column;
+    }
+    
+    .file-management-actions .btn {
+        min-width: auto;
+    }
+    
+    .rename-input-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .rename-input {
+        min-width: auto;
+    }
+    
+    .rename-actions {
+        justify-content: flex-end;
+    }
+}
+
+@media (max-width: 480px) {
+    .file-management-meta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+    
+    .file-management-name {
+        font-size: 14px;
+    }
+    
+    .file-management-meta span {
+        font-size: 11px;
+    }
+    
+    .file-management-tabs {
+        gap: 2px;
+    }
+    
+    .file-management-tab {
+        min-width: 60px;
+        font-size: 11px;
+        padding: 6px 8px;
+    }
+}
+
+/* 动画效果 */
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 文件项动画延迟 */
+.file-management-item:nth-child(1) { animation-delay: 0.05s; }
+.file-management-item:nth-child(2) { animation-delay: 0.1s; }
+.file-management-item:nth-child(3) { animation-delay: 0.15s; }
+.file-management-item:nth-child(4) { animation-delay: 0.2s; }
+.file-management-item:nth-child(5) { animation-delay: 0.25s; }
+.file-management-item:nth-child(6) { animation-delay: 0.3s; }
+.file-management-item:nth-child(7) { animation-delay: 0.35s; }
+.file-management-item:nth-child(8) { animation-delay: 0.4s; }
+.file-management-item:nth-child(9) { animation-delay: 0.45s; }
+.file-management-item:nth-child(10) { animation-delay: 0.5s; }
+
+/* 滚动条样式 */
+.file-management-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.file-management-content::-webkit-scrollbar-track {
+    background: var(--bg-color);
+}
+
+.file-management-content::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 3px;
+}
+
+.file-management-content::-webkit-scrollbar-thumb:hover {
+    background: var(--text-light);
+}
+
+/* 标签页滚动条 */
+.file-management-tabs::-webkit-scrollbar {
+    height: 4px;
+}
+
+.file-management-tabs::-webkit-scrollbar-track {
+    background: var(--bg-color);
+}
+
+.file-management-tabs::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 2px;
+}
+
+/* 确保弹窗层级正确 */
+.modal-overlay {
+    z-index: 10000;
+}
+
+.file-management-modal {
+    z-index: 10001;
+}
+
+#moveFileModal {
+    z-index: 10002;
+}
+
+/* 移动弹窗样式优化 */
+.move-option:hover {
+    background-color: var(--bg-hover) !important;
+    border-color: var(--primary-color) !important;
+    transform: translateY(-1px);
+}
+
+.move-option i {
+    margin-right: 8px;
+    color: var(--primary-color);
+}
+
+/* 文件卡片动画 */
+.file-card-appear {
+    animation: fileCardAppear 0.3s ease-out forwards;
+}
+
+.file-card.file-removing {
+    animation: fileCardRemove 0.3s ease-out forwards !important;
+    pointer-events: none;
+}
+
+@keyframes fileCardAppear {
+    0% {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes fileCardRemove {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+        max-height: 200px;
+        margin-bottom: 16px;
+    }
+    50% {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(0.8);
+        opacity: 0;
+        max-height: 0;
+        padding: 0;
+        margin-bottom: 0;
+        border: none;
+    }
+}

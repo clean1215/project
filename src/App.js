@@ -1,0 +1,252 @@
+import React, { useEffect, useState } from 'react';
+import '../css/style.css'; // 导入项目全局样式
+
+function App() {
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    const checkDependencies = () => {
+      const requiredModules = [
+        'FileManagerApp',
+        'NavigationManager',
+        'ThemeManager',
+        'ConsoleSystem',
+        'Utils'
+      ];
+
+      return requiredModules.every(module => window[module]);
+    };
+    const loadScripts = async () => {
+      // 按依赖顺序加载核心脚本
+      const scriptOrder = [
+        '/js/utils.js',
+        '/js/theme.js',
+        '/js/navigation.js',
+        '/js/console.js',
+        '/js/file-manager.js',
+        '/js/drag-drop.js',
+        '/js/announcement.js',
+        '/js/main.js'
+      ];
+
+      for (const src of scriptOrder) {
+        await new Promise((resolve, reject) => {
+          const script = document.createElement('script');
+          script.src = src;
+          script.onload = resolve;
+          script.onerror = () => reject(new Error(`Failed to load ${src}`));
+          document.body.appendChild(script);
+        });
+      }
+
+      // 验证依赖并初始化应用
+      if (checkDependencies()) {
+        // 初始化主题管理器
+        if (!window.themeManager) {
+          window.themeManager = new window.ThemeManager();
+        }
+
+        // 初始化导航管理器
+        if (!window.navigationManager) {
+          window.navigationManager = new window.NavigationManager();
+        }
+
+        // 初始化控制台系统
+        if (!window.consoleSystem) {
+          window.consoleSystem = new window.ConsoleSystem();
+        }
+
+        // 初始化文件管理器
+        if (!window.fileManager) {
+          window.fileManager = new window.FileManager();
+        }
+
+        // 启动主应用
+        if (!window.app) {
+          window.app = new window.FileManagerApp();
+        }
+
+        setIsLoaded(true);
+      } else {
+        console.error('缺少必要的应用模块，无法初始化');
+      }
+    };
+
+    loadScripts().catch(error => {
+      console.error('初始化失败:', error);
+    });
+
+    // 清理函数
+    return () => {
+      // 移除动态添加的脚本（可选）
+      document.querySelectorAll('script[src^="/js/"]').forEach(script => {
+        script.remove();
+      });
+    };
+  }, []);
+
+  return (
+    <div className="App">
+      {/* 应用加载状态 */}
+      {!isLoaded ? (
+        <div className="empty-state">
+          <i className="ti ti-loader-circle"></i>
+          <h3>应用加载中</h3>
+          <p>请稍候，正在初始化文件管理系统...</p>
+        </div>
+      ) : (
+        // 应用主内容区域（对应原有HTML结构）
+        <div className="main-container">
+          {/* 导航栏 */}
+          <nav className="sidebar">
+            <div className="logo">
+              <i className="ti ti-file-code"></i>
+              <span>文件管理器</span>
+            </div>
+            <ul className="nav-links">
+              <li>
+                <a href="#" className="nav-link active" data-page="dashboard">
+                  <i className="ti ti-home"></i>
+                  <span>仪表盘</span>
+                </a>
+              </li>
+              <li>
+                <a href="#" className="nav-link" data-page="items">
+                  <i className="ti ti-box"></i>
+                  <span>道具</span>
+                </a>
+              </li>
+              <li>
+                <a href="#" className="nav-link" data-page="skills">
+                  <i className="ti ti-bolt"></i>
+                  <span>技能</span>
+                </a>
+              </li>
+              <li>
+                <a href="#" className="nav-link" data-page="characters">
+                  <i className="ti ti-user"></i>
+                  <span>人物</span>
+                </a>
+              </li>
+              <li>
+                <a href="#" className="nav-link" data-page="talents">
+                  <i className="ti ti-star"></i>
+                  <span>天赋</span>
+                </a>
+              </li>
+              <li>
+                <a href="#" className="nav-link" data-page="others">
+                  <i className="ti ti-ellipsis-h"></i>
+                  <span>其他</span>
+                </a>
+              </li>
+              <li>
+                <a href="#" className="nav-link" data-page="images">
+                  <i className="ti ti-image"></i>
+                  <span>万相集</span>
+                </a>
+              </li>
+              <li>
+                <a href="#" className="nav-link" data-page="more">
+                  <i className="ti ti-settings"></i>
+                  <span>更多</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+
+          {/* 主内容区 */}
+          <main className="main-content">
+            {/* 页面标题 */}
+            <header className="page-header">
+              <h1 id="pageTitle">仪表盘</h1>
+              <p id="pageDescription">管理您的资源文件，导入并查看内容</p>
+            </header>
+
+            {/* 公告区域 */}
+            <section id="announcementSection" className="announcement-section">
+              <div className="announcement-card">
+                <h2 id="sectionTitle">资源文件</h2>
+              </div>
+            </section>
+
+            {/* 导入区域 */}
+            <section id="importSection" className="import-section">
+              <div className="import-card">
+                <div className="drag-drop-area" id="dragDropArea">
+                  <i className="ti ti-cloud-upload"></i>
+                  <h3>拖拽文件到此处导入</h3>
+                  <p>支持文本文件和图片</p>
+                  <button id="importBtn" className="btn primary">选择文件</button>
+                  <input type="file" id="fileInput" multiple hidden />
+                </div>
+                <div id="dragDropFileList" className="file-list"></div>
+              </div>
+            </section>
+
+            {/* 网格内容区 */}
+            <section id="gridSection" className="grid-section">
+              <div className="category-selector">
+                <div className="category-options">
+                  <button className="category-option active" data-category="items">道具</button>
+                  <button className="category-option" data-category="skills">技能</button>
+                  <button className="category-option" data-category="characters">人物</button>
+                  <button className="category-option" data-category="talents">天赋</button>
+                  <button className="category-option" data-category="others">其他</button>
+                </div>
+              </div>
+              <div className="files-grid" id="filesGrid">
+                {/* 文件内容将由fileManager动态生成 */}
+              </div>
+            </section>
+
+            {/* 设置区域 */}
+            <section id="moreSection" className="more-section" style={{ display: 'none' }}>
+              <div className="settings-vertical">
+                <div className="settings-card">
+                  <h3 className="section-title">主题设置</h3>
+                  <div className="theme-options">
+                    <button className="theme-option active" data-theme="light">浅色主题</button>
+                    <button className="theme-option" data-theme="dark">深色主题</button>
+                  </div>
+                </div>
+                <div className="settings-card">
+                  <h3 className="section-title">控制台</h3>
+                  <div className="console-container">
+                    <div id="consoleOutput" className="console-output">
+                      // 文件资源管理系统控制台 v2.0
+                      // 输入 "help" 查看可用命令
+                    </div>
+                    <div className="console-input-group">
+                      <input
+                        type="text"
+                        id="consoleInput"
+                        placeholder="输入命令..."
+                        className="console-input"
+                      />
+                      <button id="executeCommand" className="btn primary">执行</button>
+                      <button id="resetConsole" className="btn secondary">清空</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </main>
+        </div>
+      )}
+
+      {/* 文件内容弹窗 */}
+      <div id="fileModal" className="modal">
+        <div className="modal-content">
+          <div className="modal-header">
+            <h2 id="modalTitle">文件内容</h2>
+            <button id="closeModal" className="close-btn">&times;</button>
+          </div>
+          <div id="modalBody" className="modal-body"></div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default App;

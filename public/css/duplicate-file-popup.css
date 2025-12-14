@@ -1,0 +1,255 @@
+/* 重复文件处理弹窗样式 */
+.duplicate-file-modal {
+    max-width: 800px;
+    z-index: 10002;
+}
+
+.duplicate-file-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 20px;
+    height: 600px;
+}
+
+.duplicate-file-side {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: var(--card-bg-color);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.duplicate-file-header {
+    padding: 12px 16px;
+    background-color: var(--bg-color-secondary);
+    border-bottom: 1px solid var(--border-color);
+    font-weight: 600;
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+}
+
+.duplicate-file-header .tag {
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.duplicate-file-header .local-tag {
+    background-color: var(--primary-color-light);
+    color: var(--primary-color);
+}
+
+.duplicate-file-header .import-tag {
+    background-color: var(--success-color-light);
+    color: var(--success-color);
+}
+
+.duplicate-file-content {
+    padding: 16px;
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.duplicate-file-info {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+    flex-shrink: 0;
+}
+
+.duplicate-file-info-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background-color: var(--bg-color);
+    border-radius: 6px;
+    border: 1px solid var(--border-color-light);
+}
+
+.duplicate-file-info-label {
+    font-weight: 500;
+    color: var(--text-light);
+    font-size: 14px;
+}
+
+.duplicate-file-info-value {
+    font-weight: 600;
+    color: var(--text-color);
+    font-size: 14px;
+}
+
+.duplicate-file-diff {
+    margin-top: 16px;
+    border-top: 1px solid var(--border-color-light);
+    padding-top: 16px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+.duplicate-file-diff h4 {
+    margin-bottom: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.duplicate-file-diff-content {
+    background-color: var(--code-bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 12px;
+    font-family: 'Monaco', 'Consolas', monospace;
+    font-size: 12px;
+    line-height: 1.5;
+    flex: 1;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.duplicate-file-content-main {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    color: var(--text-color);
+}
+
+.duplicate-file-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 16px;
+    border-top: 1px solid var(--border-color);
+    background-color: var(--bg-color-secondary);
+    flex-shrink: 0;
+}
+
+.duplicate-file-stats {
+    padding: 16px;
+    border-top: 1px solid var(--border-color);
+    background-color: var(--bg-color-secondary);
+    text-align: center;
+    font-weight: 500;
+    color: var(--text-color);
+    flex-shrink: 0;
+}
+
+/* 文件对比高亮样式 - 新增和移除的文本 */
+.text-diff-added {
+    background-color: #ffeb3b; /* 黄色背景 */
+    color: #f44336; /* 红色文字 */
+    font-weight: bold;
+    padding: 1px 2px;
+    border-radius: 2px;
+}
+
+.text-diff-removed {
+    background-color: #ffeb3b; /* 黄色背景 */
+    color: #f44336; /* 红色文字 */
+    font-weight: bold;
+    padding: 1px 2px;
+    border-radius: 2px;
+    text-decoration: line-through;
+}
+
+/* 新文件中的新增文本 */
+.new-file .text-diff-added {
+    background-color: #e8f5e9; /* 浅绿色背景 */
+    color: #2e7d32; /* 深绿色文字 */
+    font-weight: bold;
+    padding: 1px 2px;
+    border-radius: 2px;
+}
+
+/* 旧文件中的移除文本 */
+.old-file .text-diff-removed {
+    background-color: #ffebee; /* 浅红色背景 */
+    color: #c62828; /* 深红色文字 */
+    font-weight: bold;
+    padding: 1px 2px;
+    border-radius: 2px;
+    text-decoration: line-through;
+}
+
+/* 弹窗层级调整 */
+#dragDropModal {
+    z-index: 10003;
+}
+
+#duplicateFileModal {
+    z-index: 10002;
+}
+
+.modal-overlay {
+    z-index: 10001;
+}
+
+/* 完整的文本显示 */
+.full-text-display {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-family: 'Monaco', 'Consolas', 'Courier New', monospace;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+/* 差异对比样式 */
+.diff-container {
+    position: relative;
+    overflow-x: auto;
+}
+
+.diff-line {
+    display: flex;
+    min-height: 20px;
+    font-family: 'Monaco', 'Consolas', monospace;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.diff-line-number {
+    width: 40px;
+    padding: 0 8px;
+    text-align: right;
+    color: #999;
+    background-color: #f5f5f5;
+    border-right: 1px solid #ddd;
+    user-select: none;
+    flex-shrink: 0;
+}
+
+.diff-content {
+    flex: 1;
+    padding: 0 8px;
+    white-space: pre-wrap;
+}
+
+.diff-added {
+    background-color: rgba(76, 175, 80, 0.1);
+    border-left: 3px solid #4caf50;
+}
+
+.diff-removed {
+    background-color: rgba(244, 67, 54, 0.1);
+    border-left: 3px solid #f44336;
+}
+
+.diff-unchanged {
+    background-color: transparent;
+}
